@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://unpkg.com/konva@7.0.3/konva.min.js"></script>
+  <meta charset="utf-8" />
+  <title>Konva Save Stage Demo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #f0f0f0;
+    }
+
+    .app {
+      display: flex;
+    }
+
+    .menu {
+      width: 200px;
+      background-color: #fff;
+    }
+
+    .canvas {
+      flex: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="menu">
+      <h1>主菜单</h1>
+      <h2>组件</h2>
+      <button class="component_item" draggable="true" ondragstart="dragstart_handler(event)">按钮1</button>
+    </div>
+    <div class="canvas">
+      <div id="container" ondrop="drop_handler(event)" ondragover="dragover_handler(event)"></div>
+    </div>
+  </div>
+
+  <script>
+    /* 创建画布 */
+    const width = 750;
+    const height = window.innerHeight;
+
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: width,
+      height: height,
+    });
+    const layer = new Konva.Layer();
+    // add the layer to the stage
+    stage.add(layer);
+
+    /* 拖拽 api */
+    function dragover_handler(event) {
+      event.preventDefault();
+    }
+    function dragstart_handler(event) {
+      console.log('dragstart_handler')
+      event.dataTransfer.setData('component', JSON.stringify({ type: 'button' }));
+      event.dataTransfer.dropEffect = "move";
+    }
+    function drop_handler(event) {
+      event.preventDefault();
+      const { type } = JSON.parse(event.dataTransfer.getData('component'));
+      const view = document.getElementById('container')
+      const x = event.clientX - view.offsetLeft;
+      const y = event.clientY - view.offsetTop;
+      console.log("x", x);
+      console.log("y", y);
+      //加组件
+      add_component({ x, y })
+    }
+
+    /* 增加组件 */
+    function add_component({x, y}) {
+      const new_component = new Konva.Rect({
+        x,
+        y,
+        width: 100,
+        height: 50,
+        fill: 'red',
+        shadowBlur: 10,
+        cornerRadius: 10,
+        draggable: true
+      });
+      layer.add(new_component)
+      layer.draw()
+    }
+
+
+
+
+    // add the layer to the stage
+    stage.add(layer);
+
+    // save stage as a json string
+    const json = stage.toJSON();
+
+    console.log(JSON.parse(json));
+  </script>
+</body>
+
+</html>
