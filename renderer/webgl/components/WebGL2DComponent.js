@@ -24,9 +24,12 @@ class WebGL2DComponent {
       id: `${name}_transformer_${id}`,
     });
   }
+
   /* 添加到 画布 Layer */
   append_to_layer(layer) {
-    layer.add();
+    layer.add(this.group);
+    layer.add(this.transformer);
+    layer.draw();
   }
 }
 

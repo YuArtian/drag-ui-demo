@@ -10,6 +10,7 @@ const CANVAS_TYPE = {
 
 class WebGL2DCanvas {
   constructor(container, type='IP6'){
+    console.log('WebGL2DCanvas container',container)
     this.stage = new Konva.Stage({
       container: container.id,
       width: CANVAS_TYPE[type].CANVAS_WIDTH,
@@ -20,7 +21,7 @@ class WebGL2DCanvas {
   }
   /* 增加组件 */
   add_component(component){
-
+    component.append_to_layer(this.layer)
   }
 }
 

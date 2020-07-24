@@ -2,12 +2,14 @@ import React from "react";
 import Konva from "konva";
 import { on_drop, on_drag_over } from "../../../utils/drag";
 import { add_component_by_type } from '../../../webgl/api'
+import WebGL2DCanvas from '../../../webgl/components/WebGL2DCanvas'
+import './index.less'
 
 class Canvas extends React.Component {
   constructor(props) {
     super(props);
     this.ref_canvas = React.createRef();
-
+    this.canvas = null
   }
 
   render() {
@@ -31,61 +33,13 @@ class Canvas extends React.Component {
       console.log("y", y);
       //添加对应的组件到 canvas
       const component_data = {type, name, position: {x, y}}
-      add_component_by_type(component_data, )
+      this.canvas && add_component_by_type(this.canvas, component_data)
     }
   };
 
   componentDidMount() {
-    // var width = window.innerWidth;
-    var width = 375;
-    var height = window.innerHeight;
-
-    var stage = new Konva.Stage({
-      container: "container",
-      width,
-      height,
-    });
-
-    var layer = new Konva.Layer();
-
-    var hexagon = new Konva.RegularPolygon({
-      x: width / 2,
-      y: height / 2,
-      sides: 6,
-      radius: 70,
-      fill: "red",
-      stroke: "black",
-      strokeWidth: 4,
-    });
-    // create our shape
-    var circle = new Konva.Circle({
-      x: stage.width() / 2,
-      y: stage.height() / 2,
-      radius: 30,
-      fill: "blue",
-      stroke: "black",
-      strokeWidth: 4,
-    });
-    var circle_1 = new Konva.Circle({
-      x: stage.width() / 2,
-      y: stage.height() / 2,
-      radius: 30,
-      fill: "blue",
-      stroke: "black",
-      strokeWidth: 4,
-    });
-    // add the shape to the layer
-    layer.add(circle);
-    layer.add(hexagon);
-    layer.add(circle_1);
-
-    // add the layer to the stage
-    stage.add(layer);
-
-    // save stage as a json string
-    var json = stage.toJSON();
-
-    console.log(JSON.parse(json));
+    const canvas = new WebGL2DCanvas(this.ref_canvas.current)
+    this.canvas = canvas
   }
 }
 
