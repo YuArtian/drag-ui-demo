@@ -15,7 +15,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
     "cross-env": "^7.0.2",
-    "electron": "^9.1.1",
+    "electron": "^11.5.0",
     "konva": "^7.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
